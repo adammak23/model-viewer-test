@@ -76,7 +76,8 @@ ar-modes="scene-viewer webxr quick-look"
               <div>
                   <a class="button" onclick="playAnimation(this, 0)">Zdjęcie nasadki wstrzykiwacza</a>
                   <a class="button" onclick="playAnimation(this, 1)">Zdjęcie igły</a>
-                  <a class="button" onclick="playAnimation(this, 2)">Sprawdzenie przepływu</a>                  
+                  <a class="button" onclick="playAnimation(this, 2)">Sprawdzenie przepływu</a>    
+                  <a class="button" onclick="playAnimation(this, 3)">Wybieranie dawki</a>               
               </div>
           </div>
         </model-viewer>
@@ -97,7 +98,10 @@ ar-modes="scene-viewer webxr quick-look"
   const animation2_Length = FrameToMS * (740 - 382);
 
   const animation3_Start = 750/24;
-  const animation3_Length = FrameToMS * (1300 - 750);
+  const animation3_Length = FrameToMS * (1380 - 750);
+
+  const animation4_Start = 1380/24;
+  const animation4_Length = FrameToMS * (1575 - 1380);
 
   var timeoutID;
 
@@ -122,6 +126,11 @@ ar-modes="scene-viewer webxr quick-look"
       {
         animStartTime = animation3_Start;
         animLength = animation3_Length;
+      }
+      else if(animationIndex == 3)
+      {
+        animStartTime = animation4_Start;
+        animLength = animation4_Length;
       }
 
       //console.log(animationIndex + " " + animStartTime + " " + animLength);
@@ -243,7 +252,7 @@ ar-modes="scene-viewer webxr quick-look"
         }
         .header-box
         {
-          padding-top: 20px;
+          
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -301,7 +310,7 @@ ar-modes="scene-viewer webxr quick-look"
     }
   
     model-viewer {
-      padding: 25% 0px;
+      padding: 5% 0px;
       background-color: #eee;
       overflow-x: hidden;
     }
