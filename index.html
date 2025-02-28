@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-<link rel="stylesheet" href="test.css">
 <html lang="pl">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wegovy AR</title>
   </head>
-<!--
-min-camera-orbit='auto auto 100%'
-max-camera-orbit='auto auto 100%'
-min-field-of-view='110deg'
-max-field-of-view='110deg'
-ar-modes="scene-viewer webxr quick-look"
--->
 <body>
     <model-viewer
-              src="/model-viewer-test/assets/wegovy.glb"
-              ios-src="/model-viewer-test/assets/wegovy.usdz"
+              src="../wegovy-ar/assets/wegovy.glb"
+              ios-src="../wegovy-ar/assets/wegovy.usdz"
               alt="3D model couldnt be displayed"
               shadow-intensity="1"              
-              environment-image="/model-viewer-test/assets/hdri.jpg"
-              exposure="1.2"              
+              environment-image="../wegovy-ar/assets/hdri.jpg"
+              exposure="1.2"
               ar
               camera-controls
               camera-target="0m 0m 0m"
@@ -31,7 +23,7 @@ ar-modes="scene-viewer webxr quick-look"
               min-field-of-view='2deg'
               max-field-of-view='20deg'
               
-              style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none;"
+              style="position: fixed; top: 10%; left: 0; width: 100vw; height: 100vh; border: none;"
               >           
 
             <div class="progress-bar hide" slot="progress-bar">
@@ -59,13 +51,14 @@ ar-modes="scene-viewer webxr quick-look"
             <div class="container">
               <div class="header-box">
                   <div class="text-box">
-                      <h2>Instrukcja stosowania leku Wegovy</h2>
+                      <h2>Instrukcja stosowania leku Wegovy®</h2>
                   </div>
               </div>
               <div class="text-box">
-                  <p>Lek Wegovy jest dostępny w pięciu różnych wstrzykiwaczach,</p>
-                  <p>z których każdy zawiera odpowiednią przepisana dawkę semaglutydu:</p>
-                </div>
+                  <p>
+                    Lek Wegovy jest dostępny w pięciu różnych wstrzykiwaczach z których każdy zawiera odpowiednią przypisaną dawkę semaglutydu
+                  </p>
+                </div>                
               <div>
                   <span class="dose dose-1">0,25 mg</span>
                   <span class="dose dose-2">0,5 mg</span>
@@ -80,6 +73,7 @@ ar-modes="scene-viewer webxr quick-look"
                   <a class="button" onclick="playAnimation(this, 3)">Wybieranie dawki</a>               
               </div>
           </div>
+          <p class="serial-number">PL25SEMO00055</p>
         </model-viewer>
 </body>
 </html>
@@ -98,10 +92,10 @@ ar-modes="scene-viewer webxr quick-look"
   const animation2_Length = FrameToMS * (740 - 382);
 
   const animation3_Start = 750/24;
-  const animation3_Length = FrameToMS * (1380 - 750);
+  const animation3_Length = FrameToMS * (1595 - 750);
 
-  const animation4_Start = 1380/24;
-  const animation4_Length = FrameToMS * (1575 - 1380);
+  const animation4_Start = 1604/24;
+  const animation4_Length = FrameToMS * (1800 - 1604);
 
   var timeoutID;
 
@@ -112,23 +106,28 @@ ar-modes="scene-viewer webxr quick-look"
 
       var animStartTime = 0;
       var animLength = 0;
+      
       if(animationIndex == 0)
       {
+        modelViewer.setAttribute("camera-target","0m 2m 0m");
         animStartTime = animation1_Start;
         animLength = animation1_Length;
       }
       else if(animationIndex == 1)
       {
+        modelViewer.setAttribute("camera-target","0m 2m 0m");
         animStartTime = animation2_Start;
         animLength = animation2_Length;
       }
       else if(animationIndex == 2)
       {
+        modelViewer.setAttribute("camera-target","0m 4m 0m");
         animStartTime = animation3_Start;
         animLength = animation3_Length;
       }
       else if(animationIndex == 3)
       {
+        modelViewer.setAttribute("camera-target","0m 2m 0m");
         animStartTime = animation4_Start;
         animLength = animation4_Length;
       }
@@ -156,6 +155,8 @@ ar-modes="scene-viewer webxr quick-look"
         let homeBtn = document.querySelector('.home-button');
         homeBtn.classList.remove('fade-in');
         homeBtn.classList.add('fade-out');
+
+        modelViewer.setAttribute("camera-target","0m 0m 0m");
       }, animLength);
     };
 
@@ -174,6 +175,8 @@ ar-modes="scene-viewer webxr quick-look"
         const modelViewer = document.querySelector("model-viewer");
         modelViewer.currentTime = 48/24;
         modelViewer.pause();
+
+        modelViewer.setAttribute("camera-target","0m 0m 0m");
     };
 
 </script>
@@ -243,9 +246,21 @@ ar-modes="scene-viewer webxr quick-look"
             text-align: center;
             width: fit-content;
             padding-inline: 15px;
+            
+        }
+        .serial-number
+        {
+          font-family: Apis, sans-serif;
+          background-color: #ffffff00;          
+          position: absolute;
+          bottom: 10px;
+          right: 30px;
+          color: #001956;
+          align-self:flex-end;
         }
         .container
         {
+          padding: 3% 0px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -310,7 +325,7 @@ ar-modes="scene-viewer webxr quick-look"
     }
   
     model-viewer {
-      padding: 5% 0px;
+      padding: 0px 0px;
       background-color: #eee;
       overflow-x: hidden;
     }
@@ -373,6 +388,7 @@ ar-modes="scene-viewer webxr quick-look"
     model-viewer > #ar-prompt > img {
       animation: circle 4s linear infinite;
     }
+    
   
     model-viewer > #ar-failure {
       position: absolute;
