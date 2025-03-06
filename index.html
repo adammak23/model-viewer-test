@@ -15,9 +15,11 @@
               exposure="0.85"
               ar
               camera-controls
-              camera-target="0m 0.5m 0m"
+              camera-target="0m 0.2m 0m"
               camera-orbit="0deg 55deg 0m"
               disable-tap
+              min-field-of-view='30deg'
+              max-field-of-view='40deg'
               style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none;">
 
             <div class="progress-bar hide" slot="progress-bar">
@@ -114,25 +116,25 @@
       
       if(animationIndex == 0)
       {
-        modelViewer.setAttribute("camera-target","0m 0.5m 0m");
+        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
         animStartTime = animation1_Start;
         animLength = animation1_Length;
       }
       else if(animationIndex == 1)
       {
-        modelViewer.setAttribute("camera-target","0m 0.5m 0m");
+        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
         animStartTime = animation2_Start;
         animLength = animation2_Length;
       }
       else if(animationIndex == 2)
       {
-        modelViewer.setAttribute("camera-target","0m 1m 0m");
+        modelViewer.setAttribute("camera-target","0m 0.5m 0m");
         animStartTime = animation3_Start;
         animLength = animation3_Length;
       }
       else if(animationIndex == 3)
       {
-        modelViewer.setAttribute("camera-target","0m 0.5m 0m");
+        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
         animStartTime = animation4_Start;
         animLength = animation4_Length;
       }
@@ -161,7 +163,7 @@
         homeBtn.classList.remove('fade-in');
         homeBtn.classList.add('fade-out');
 
-        modelViewer.setAttribute("camera-target","0m 0.5m 0m");
+        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
       }, animLength);
     };
 
@@ -181,7 +183,7 @@
         modelViewer.currentTime = 48/24;
         modelViewer.pause();
 
-        modelViewer.setAttribute("camera-target","0m 0.5m 0m");
+        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
     };
 
 </script>
