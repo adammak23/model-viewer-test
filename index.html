@@ -78,9 +78,11 @@
 
 <script type="module">
 
+// initialization
   window.onload = () =>
   {
     const modelViewer = document.querySelector('model-viewer');
+    // reset model state on change
     modelViewer.addEventListener('model-visibility', function(evt)
     {
       modelViewer.play();
