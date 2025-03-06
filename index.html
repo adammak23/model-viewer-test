@@ -8,30 +8,27 @@
   </head>
 <body>
     <model-viewer
-              src="../wegovy-ar/assets/wegovy.glb"
-              ios-src="../wegovy-ar/assets/wegovy.usdz"
+              src="model-viewer-test/assets/wegovy.glb"
+              ios-src="model-viewer-test/assets/wegovy.usdz"
               alt="3D model couldnt be displayed"
-              shadow-intensity="1"              
-              environment-image="../wegovy-ar/assets/hdri.jpg"
-              exposure="1.2"
+              shadow-intensity="1"
+              exposure="0.85"
               ar
               camera-controls
-              camera-target="0m 0m 0m"
+              camera-target="0m 1m 0m"
               camera-orbit="0deg 55deg 0m"
               disable-tap
               pan-target="0m 99m 0m"
               min-field-of-view='2deg'
               max-field-of-view='20deg'
-              
-              style="position: fixed; top: 10%; left: 0; width: 100vw; height: 100vh; border: none;"
-              >           
+              style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none;">
 
             <div class="progress-bar hide" slot="progress-bar">
                 <div class="update-bar"></div>
             </div>
 
             <button slot="ar-button" id="ar-button">
-                View in your space
+                Zobacz w AR
             </button>
 
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
@@ -80,6 +77,18 @@
 
 
 <script type="module">
+
+  window.onload = () =>
+  {
+    const modelViewer = document.querySelector('model-viewer');
+    modelViewer.addEventListener('model-visibility', function(evt)
+    {
+      modelViewer.play();
+      modelViewer.currentTime = 48/24;
+      modelViewer.pause();      
+    })
+  }
+
   // blender has 24fps animation so 1000/24 = 41.66666 but this number doesnt work for some reason?
   const FrameToMS = 1000/24;
   // start time is in seconds
@@ -181,31 +190,6 @@
 
 </script>
 
-<script>
-  function executeOnStartup()
-  {
-    const modelViewer = document.querySelector('model-viewer');
-    modelViewer.addEventListener('model-visibility', function(evt)
-    {
-      const modelViewer = document.querySelector("model-viewer");
-      modelViewer.play();
-      modelViewer.currentTime = 48/24;
-      modelViewer.pause();      
-    })
-  }
-  window.onload = executeOnStartup;
-</script>
-
-<!--
-<script type="text/javascript">
-  function executeOnStartup()
-  {
-    alert('ok');
-  }
-  window.onload = executeOnStartup;
-</script>
--->
-
 <style>
 
 @keyframes fadeOut {
@@ -260,7 +244,7 @@
         }
         .container
         {
-          padding: 3% 0px;
+          padding: 20px 0px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -340,15 +324,16 @@
       left: 50%;
       transform: translateX(-50%);
       white-space: nowrap;
-      bottom: 132px;
-      padding: 0px 16px 0px 40px;
+      bottom: 25%;
+      padding: 0px 20px 0px 40px;
       font-family: Apis, sans-serif;
-      font-size: 14px;
+      font-size: 16px;
       color:#4285f4;
-      height: 36px;
+      height: 56px;
       line-height: 36px;
       border-radius: 18px;
-      border: 1px solid #DADCE0;
+      border: 2px solid #DADCE0;
+      z-index: 1;
     }
   
     #ar-button:active {
@@ -387,14 +372,28 @@
   
     model-viewer > #ar-prompt > img {
       animation: circle 4s linear infinite;
-    }
-    
+    }    
   
     model-viewer > #ar-failure {
+      background-size: 20px 20px;
+      background-position: 12px 50%;
+      background-color: #fff;
+      white-space: nowrap;
+      bottom: 25%;
+      padding: 0px 20px 0px 20px;
+      font-family: Apis, sans-serif;
+      font-size: 16px;
+      color:#4285f4;
+      height: 56px;
+      line-height: 36px;
+      border-radius: 18px;
+      border: 2px solid #DADCE0;
+      z-index: 2;
+
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      bottom: 175px;
+      bottom: 50%;
       display: none;
     }
   
