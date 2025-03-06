@@ -15,7 +15,7 @@
               exposure="0.85"
               ar
               camera-controls
-              camera-target="0m 1m 0m"
+              camera-target="0m 4m 0m"
               camera-orbit="0deg 55deg 0m"
               disable-tap
               pan-target="0m 99m 0m"
@@ -27,9 +27,7 @@
                 <div class="update-bar"></div>
             </div>
 
-            <button slot="ar-button" id="ar-button">
-                Zobacz w AR
-            </button>
+
 
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
 
@@ -67,7 +65,10 @@
                   <a class="button" onclick="playAnimation(this, 0)">Zdjęcie nasadki wstrzykiwacza</a>
                   <a class="button" onclick="playAnimation(this, 1)">Zdjęcie igły</a>
                   <a class="button" onclick="playAnimation(this, 2)">Sprawdzenie przepływu</a>    
-                  <a class="button" onclick="playAnimation(this, 3)">Wybieranie dawki</a>               
+                  <a class="button" onclick="playAnimation(this, 3)">Wybieranie dawki</a> 
+                  <button slot="ar-button" id="ar-button">
+                    Zobacz w AR
+                </button>              
               </div>
           </div>
           <p class="serial-number">PL25SEMO00055</p>
@@ -167,7 +168,7 @@
         homeBtn.classList.remove('fade-in');
         homeBtn.classList.add('fade-out');
 
-        modelViewer.setAttribute("camera-target","0m 0m 0m");
+        modelViewer.setAttribute("camera-target","0m 4m 0m");
       }, animLength);
     };
 
@@ -187,7 +188,7 @@
         modelViewer.currentTime = 48/24;
         modelViewer.pause();
 
-        modelViewer.setAttribute("camera-target","0m 0m 0m");
+        modelViewer.setAttribute("camera-target","0m 4m 0m");
     };
 
 </script>
@@ -317,16 +318,15 @@
     }
 
     #ar-button {
+      display: block;
       background-image: url(https://modelviewer.dev/assets/ic_view_in_ar_new_googblue_48dp.png);
       background-repeat: no-repeat;
       background-size: 20px 20px;
       background-position: 12px 50%;
       background-color: #fff;
-      position: absolute;
-      left: 50%;
+      margin-left: 50%;
       transform: translateX(-50%);
       white-space: nowrap;
-      bottom: 25%;
       padding: 0px 20px 0px 40px;
       font-family: Apis, sans-serif;
       font-size: 16px;
@@ -334,8 +334,7 @@
       height: 56px;
       line-height: 36px;
       border-radius: 18px;
-      border: 2px solid #DADCE0;
-      z-index: 1;
+      border: 2px solid #DADCE0;    
     }
   
     #ar-button:active {
