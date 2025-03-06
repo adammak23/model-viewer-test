@@ -15,10 +15,9 @@
               exposure="0.85"
               ar
               camera-controls
-              camera-target="0m 4m 0m"
+              camera-target="0m 0m 0m"
               camera-orbit="0deg 55deg 0m"
               disable-tap
-              pan-target="0m 99m 0m"
               min-field-of-view='2deg'
               max-field-of-view='20deg'
               style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none;">
@@ -164,7 +163,7 @@
         homeBtn.classList.remove('fade-in');
         homeBtn.classList.add('fade-out');
 
-        modelViewer.setAttribute("camera-target","0m 4m 0m");
+        modelViewer.setAttribute("camera-target","0m 0m 0m");
       }, animLength);
     };
 
@@ -184,7 +183,7 @@
         modelViewer.currentTime = 48/24;
         modelViewer.pause();
 
-        modelViewer.setAttribute("camera-target","0m 4m 0m");
+        modelViewer.setAttribute("camera-target","0m 0m 0m");
     };
 
 </script>
