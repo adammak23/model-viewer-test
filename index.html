@@ -27,7 +27,7 @@
                 <div class="update-bar"></div>
             </div>
 
-
+            <button id="ar-button" slot="ar-button"> Zobacz w AR </button>
 
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
 
@@ -43,6 +43,7 @@
                 AR Error!
             </button>
 
+
             <div class="container">
               <div class="header-box">
                   <div class="text-box">
@@ -50,9 +51,8 @@
                   </div>
               </div>
               <div class="text-box">
-                  <p>
-                    Lek Wegovy jest dostępny w pięciu różnych wstrzykiwaczach z których każdy zawiera odpowiednią przypisaną dawkę semaglutydu
-                  </p>
+                  <p>Lek Wegovy jest dostępny w pięciu różnych wstrzykiwaczach z których każdy zawiera odpowiednią przypisaną dawkę semaglutydu</p>
+                  <p class="serial-number">PL25SEMO00055</p>
                 </div>                
               <div>
                   <span class="dose dose-1">0,25 mg</span>
@@ -65,13 +65,9 @@
                   <a class="button" onclick="playAnimation(this, 0)">Zdjęcie nasadki wstrzykiwacza</a>
                   <a class="button" onclick="playAnimation(this, 1)">Zdjęcie igły</a>
                   <a class="button" onclick="playAnimation(this, 2)">Sprawdzenie przepływu</a>    
-                  <a class="button" onclick="playAnimation(this, 3)">Wybieranie dawki</a> 
-                  <button slot="ar-button" id="ar-button">
-                    Zobacz w AR
-                </button>              
+                  <a class="button" onclick="playAnimation(this, 3)">Wybieranie dawki</a>    
               </div>
           </div>
-          <p class="serial-number">PL25SEMO00055</p>
         </model-viewer>
 </body>
 </html>
@@ -229,32 +225,45 @@
             background-color: white;
             border: 2px solid #001956;
             border-radius: 0px;
-            margin: 5px 5px;
+            margin: 5px 0;
             text-align: center;
             width: fit-content;
-            padding-inline: 15px;
+            max-width: 90%;
+            padding: 10px 15px;
             
+        }
+        .text-box h2 {
+            font-size: calc(1.5vmin + 8px);
+            margin: 5px 0;
+        }
+        
+        .text-box p {
+            font-size: calc(1vmin + 8px);
+            margin: 5px 0;
         }
         .serial-number
         {
           font-family: Apis, sans-serif;
-          background-color: #ffffff00;          
-          position: absolute;
-          bottom: 10px;
-          right: 30px;
+          background-color: #ffffff00;
           color: #001956;
           align-self:flex-end;
         }
         .container
         {
-          padding: 20px 0px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 50vh;
+          width: 100vw;
           display: flex;
           flex-direction: column;
           align-items: center;
+          padding: 20px;
+          box-sizing: border-box;
         }
         .header-box
         {
-          
+          width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -262,13 +271,14 @@
         .button {
           color: #001956;
           display: inline-block;
-          padding: 15px;
+          padding: 10px 15px;
           margin: 5px;
           background-color: #fff;
           border: 2px solid #001956;
           border-radius: 15px;
           text-decoration: none;
           font-weight: bold;
+          font-size: calc(1vmin + 8px);
         }
         .button:hover
         {
@@ -294,11 +304,12 @@
         }
         .dose {
             display: inline-block;
-            padding: 10px;
-            margin: 5px;
+            padding: 8px;
+            margin: 3px;
             border: 2px solid #001956;
             border-radius: 0px;
             color: white;
+            font-size: calc(1vmin + 8px);
         }
         .dose-1 { background-color: #4CAF50; }
         .dose-2 { background-color: #C760A2; }
@@ -318,13 +329,14 @@
     }
 
     #ar-button {
-      display: block;
+      position: absolute;
       background-image: url(https://modelviewer.dev/assets/ic_view_in_ar_new_googblue_48dp.png);
       background-repeat: no-repeat;
       background-size: 20px 20px;
       background-position: 12px 50%;
       background-color: #fff;
-      margin-left: 50%;
+      bottom: 25%;
+      left: 50%;
       transform: translateX(-50%);
       white-space: nowrap;
       padding: 0px 20px 0px 40px;
@@ -334,7 +346,8 @@
       height: 56px;
       line-height: 36px;
       border-radius: 18px;
-      border: 2px solid #DADCE0;    
+      border: 2px solid #DADCE0;   
+      z-index: 1;
     }
   
     #ar-button:active {
