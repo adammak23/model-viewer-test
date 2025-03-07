@@ -15,7 +15,7 @@
               exposure="0.85"
               ar
               camera-controls
-              camera-target="0m 0.2m 0m"
+              camera-target="0m 0.13m 0m"
               camera-orbit="0deg 55deg 0m"
               disable-tap
               min-field-of-view='30deg'
@@ -26,12 +26,12 @@
                 <div class="update-bar"></div>
             </div>
 
-            <button id="ar-button" slot="ar-button"> Zobacz w AR </button>
+            <button class="ar-button" id="ar-button" slot="ar-button"> Zobacz w AR </button>
 
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
 
             <a class="home-button fade-out" onclick="home()">
-              <i class="fas fa-home"></i> Home
+              <i class="fas fa-home"></i>
             </a>
 
             <div id="ar-prompt">
@@ -42,6 +42,9 @@
                 AR Error!
             </button>
 
+            <div class="animation-text fade-out">
+              <p>--- Temp Animation Text ---</p>
+            </div>
 
             <div class="container">
               <div class="header-box">
@@ -94,17 +97,43 @@
 
   const animation1_Start = 48/24;
   const animation1_Length = FrameToMS * (370-48);
-  
+
+  const anim1_text1 = "Upewnij się, że na wstrzykiwaczu Wegovy® widnieje odpowiednia dawka leku.";
+  const anim1_text1_time = 5;
+  const anim1_text2 = "Zdejmij nasadkę wstrzykiwacza.";
+  const anim1_text2_time = 4;
+  const anim1_text3 = "Upewnij się, że widoczny w okienku wstrzykiwacza lek jest przezroczysty i bezbarwny.";
+  const anim1_text3_time = 5;
+
   const animation2_Start = 382/24;
   const animation2_Length = FrameToMS * (740 - 382);
+
+  const anim2_text1 = "Oderwij papierową nalepkę.";
+  const anim2_text1_time = 5;
+  const anim2_text2 = "Przykręć igłę do wstrzykiwacza.";
+  const anim2_text2_time = 5;
+  const anim2_text3 = "Zdejmij obie osłonki chroniące igłę. Zachowaj na później zewnętrzną osłonkę,\nbędzie potrzebna po wstrzyknięciu. Wyrzuć wewnętrzną osłonkę igły.";
+  const anim2_text3_time = 7;
 
   const animation3_Start = 750/24;
   const animation3_Length = FrameToMS * (1595 - 750);
 
+  const anim3_text1 = "Przed pierwszym użyciem każdego nowego wstrzykiwacza, należy sprawdzić przepływ.";
+  const anim3_text1_time = 11;
+  const anim3_text2 = "Wciśnij przycisk podania dawki i przytrzymaj go, aż wskaźnik dawki zrówna się z wartością \"0\"";
+  const anim3_text2_time = 7;
+  const anim3_text3 = "Na końcu igły powinna pojawić się kropla leku Wegovy®.\nPojawienie się kropli oznacza, że wstrzykiwacz jest gotowy do użycia.";
+  const anim3_text3_time = 7;
+  const anim3_text4 = "Jeżeli kropla się nie pojawi, należy ponownie sprawdzić przepływ.\nPrzepływ można sprawdzić tylko dwa razy.\nJeśli kropla dalej się nie pojawiła, należy zmienić igłę i jeszcze raz sprawdzić przepływ.";
+  const anim3_text4_time = 7;
+
   const animation4_Start = 1604/24;
   const animation4_Length = FrameToMS * (1800 - 1604);
 
-  var timeoutID;
+  const defaultCameraTarget = "0m 0.13m 0m"
+
+  var animtionTimeoutID;
+  var animtionTextTimeoutID;
 
     window.playAnimation = (element, animationIndex) =>
     {
@@ -116,25 +145,35 @@
       
       if(animationIndex == 0)
       {
-        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
+        modelViewer.setAttribute("camera-target", defaultCameraTarget);
+        displaySequentialTexts(
+          [anim1_text1, anim1_text2, anim1_text3],
+          [anim1_text1_time, anim1_text2_time, anim1_text3_time]);        
+        
         animStartTime = animation1_Start;
         animLength = animation1_Length;
       }
       else if(animationIndex == 1)
       {
-        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
+        modelViewer.setAttribute("camera-target", defaultCameraTarget);
+        displaySequentialTexts(
+          [anim2_text1, anim2_text2, anim2_text3],
+          [anim2_text1_time, anim2_text2_time, anim2_text3_time]);   
         animStartTime = animation2_Start;
         animLength = animation2_Length;
       }
       else if(animationIndex == 2)
       {
-        modelViewer.setAttribute("camera-target","0m 0.5m 0m");
+        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
+        displaySequentialTexts(
+          [anim3_text1, anim3_text2, anim3_text3, anim3_text4],
+          [anim3_text1_time, anim3_text2_time, anim3_text3_time, anim3_text4_time]);   
         animStartTime = animation3_Start;
         animLength = animation3_Length;
       }
       else if(animationIndex == 3)
       {
-        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
+        modelViewer.setAttribute("camera-target", defaultCameraTarget);
         animStartTime = animation4_Start;
         animLength = animation4_Length;
       }
@@ -142,7 +181,7 @@
       //console.log(animationIndex + " " + animStartTime + " " + animLength);
 
       modelViewer.currentTime = animStartTime;
-      clearTimeout(timeoutID);
+      clearTimeout(animtionTimeoutID);
 
       let container = document.querySelector('.container');
       container.classList.remove('fade-in');
@@ -152,7 +191,21 @@
       homeBtn.classList.remove('fade-out');
       homeBtn.classList.add('fade-in');
 
-      timeoutID = self.setTimeout(()=>
+      let animationText = document.querySelector('.animation-text');
+      animationText.classList.remove('fade-out');
+      animationText.classList.add('fade-in');
+
+      let AR_Button = document.querySelector('.ar-button');
+      AR_Button.classList.remove('fade-in');
+      AR_Button.classList.add('fade-out');
+
+      if(animationIndex == 3)
+      {
+        animationText.classList.remove('fade-in');
+        animationText.classList.add('fade-out');
+      }
+
+      animtionTimeoutID = self.setTimeout(()=>
       {
         modelViewer.pause();
         let container = document.querySelector('.container');
@@ -163,13 +216,21 @@
         homeBtn.classList.remove('fade-in');
         homeBtn.classList.add('fade-out');
 
-        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
+        let animationText = document.querySelector('.animation-text');
+        animationText.classList.remove('fade-in');
+        animationText.classList.add('fade-out');
+
+        let AR_Button = document.querySelector('.ar-button');
+        AR_Button.classList.remove('fade-out');
+        AR_Button.classList.add('fade-in');
+
+        modelViewer.setAttribute("camera-target", defaultCameraTarget);
       }, animLength);
     };
 
     window.home = (element, animationIndex) =>
     {
-        clearTimeout(timeoutID)
+        clearTimeout(animtionTimeoutID)
 
         let container = document.querySelector('.container');
         container.classList.remove('fade-out');
@@ -179,12 +240,60 @@
         homeBtn.classList.remove('fade-in');
         homeBtn.classList.add('fade-out');
 
+        let animationText = document.querySelector('.animation-text');
+        animationText.classList.remove('fade-in');
+        animationText.classList.add('fade-out');
+
+        let AR_Button = document.querySelector('.ar-button');
+        AR_Button.classList.remove('fade-out');
+        AR_Button.classList.add('fade-in');
+
         const modelViewer = document.querySelector("model-viewer");
         modelViewer.currentTime = 48/24;
         modelViewer.pause();
 
-        modelViewer.setAttribute("camera-target","0m 0.2m 0m");
+        // clear anim texts
+        clearTimeout(animtionTextTimeoutID);
+
+        modelViewer.setAttribute("camera-target", defaultCameraTarget);
     };
+
+    const updateAnimationText = (text) =>
+    {
+      const animationText = document.querySelector('.animation-text p');
+      animationText.textContent = text;
+    };
+
+    const displaySequentialTexts = (texts, times) =>
+    {
+      if (texts.length !== times.length)
+      {
+          console.error('Text and time arrays must have the same length');
+          return;
+      }
+
+      // Clear any existing timeouts
+      if (animtionTextTimeoutID)
+      {
+          clearTimeout(animtionTextTimeoutID);
+      }
+
+      let currentIndex = 0;
+      const showNextText = () =>
+      {
+          if (currentIndex < texts.length)
+          {
+              updateAnimationText(texts[currentIndex]);
+              animtionTextTimeoutID = setTimeout(() =>
+              {
+                  currentIndex++;
+                  showNextText();
+              }, times[currentIndex] * 1000); // Convert to milliseconds
+          }
+      };
+
+      showNextText();
+  };
 
 </script>
 
@@ -221,7 +330,7 @@
         .text-box
         {
             color: #001956;
-            background-color: white;
+            background-color: #ffffffa8;
             border: 2px solid #001956;
             border-radius: 0px;
             margin: 5px 0;
@@ -240,6 +349,27 @@
             font-size: calc(1vmin + 8px);
             margin: 5px 0;
         }
+        .animation-text
+        {
+          box-sizing: border-box;
+          position: absolute;
+          top: 100px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: #001956;
+          background-color: #ffffffa8;
+          border: 2px solid #001956;
+          border-radius: 0px;
+          text-align: center;
+          width: 90%;
+          padding: 10px 15px;
+          margin: 10px 0px;
+          z-index: 1;
+        }
+        .animation-text p {
+          font-size: calc(1vmin + 18px);
+          margin: 5px 0;
+        }
         .serial-number
         {
           font-family: Apis, sans-serif;
@@ -250,7 +380,7 @@
         .container
         {
           position: absolute;
-          top: 0;
+          top: 80px;
           left: 0;
           height: 50vh;
           width: 100vw;
@@ -272,7 +402,7 @@
           display: inline-block;
           padding: 10px 15px;
           margin: 5px;
-          background-color: #fff;
+          background-color: #ffffffa8;
           border: 2px solid #001956;
           border-radius: 15px;
           text-decoration: none;
@@ -286,15 +416,16 @@
 
         .home-button {
           font-family: Apis, sans-serif;
-          background-color: #fff;          
+          background-color: #ffffffa8;          
           position: absolute;
-          top: 20px;
+          top: 50%;
           right: 20px;
-          padding: 10px 20px;
+          transform: translateY(-50%);
+          padding: 10px 12px;
           color: #001956;
           align-self:flex-end;
           border: 2px solid #001956;
-          border-radius: 15px;
+          border-radius: 30px;
           font-weight: bold;
         }
         .home-button:hover
@@ -333,7 +464,7 @@
       background-repeat: no-repeat;
       background-size: 20px 20px;
       background-position: 12px 50%;
-      background-color: #fff;
+      background-color: #ffffffa8;
       bottom: 25%;
       left: 50%;
       transform: translateX(-50%);
