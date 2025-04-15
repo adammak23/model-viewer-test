@@ -19,7 +19,7 @@
               camera-orbit="0deg 55deg 0m"
               disable-tap
               min-field-of-view='30deg'
-              max-field-of-view='40deg'
+              max-field-of-view='80deg'
               style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none;">
 
             <div class="progress-bar hide" slot="progress-bar">
@@ -57,17 +57,18 @@
                   <p class="serial-number">PL25SEMO00055</p>
                 </div>                
               <div>
-                  <span class="dose dose-1">0,25 mg</span>
-                  <span class="dose dose-2">0,5 mg</span>
-                  <span class="dose dose-3">1 mg</span>
-                  <span class="dose dose-4">1,7 mg</span>
-                  <span class="dose dose-5">2,4 mg</span>
+                  <span class="dose dose-1" onclick="updateTexture('wegovy_0_25mg.jpg')">0,25 mg</span>
+                  <span class="dose dose-2" onclick="updateTexture('wegovy_0_5mg.jpg')">0,5 mg</span>
+                  <span class="dose dose-3" onclick="updateTexture('wegovy_1mg.jpg')">1 mg</span>
+                  <span class="dose dose-4" onclick="updateTexture('wegovy_1_7mg.jpg')">1,7 mg</span>
+                  <span class="dose dose-5" onclick="updateTexture('wegovy_2_4mg.jpg')">2,4 mg</span>
               </div>
               <div>
                   <a class="button" onclick="playAnimation(this, 0)">Zdjęcie nasadki wstrzykiwacza</a>
-                  <a class="button" onclick="playAnimation(this, 1)">Zdjęcie igły</a>
+                  <a class="button" onclick="playAnimation(this, 1)">Założenie igły</a>
                   <a class="button" onclick="playAnimation(this, 2)">Sprawdzenie przepływu</a>    
-                  <a class="button" onclick="playAnimation(this, 3)">Wybieranie dawki</a>    
+                  <a class="button" onclick="playAnimation(this, 3)">Wybieranie dawki</a>
+                  <a class="button" onclick="playAnimation(this, 4)">Podanie leku</a>
               </div>
           </div>
         </model-viewer>
@@ -127,8 +128,11 @@
   const anim3_text4 = "Jeżeli kropla się nie pojawi, należy ponownie sprawdzić przepływ.\nPrzepływ można sprawdzić tylko dwa razy.\nJeśli kropla dalej się nie pojawiła, należy zmienić igłę i jeszcze raz sprawdzić przepływ.";
   const anim3_text4_time = 7;
 
-  const animation4_Start = 1604/24;
-  const animation4_Length = FrameToMS * (1800 - 1604);
+  const animation4_Start = 1604/24;  
+  const animation4_Length = FrameToMS * (1795 - 1604);
+
+  const animation5_Start = 1795/24; 
+  const animation5_Length = FrameToMS * (2210 - 1795);
 
   const defaultCameraTarget = "0m 0.13m 0m"
 
@@ -177,6 +181,12 @@
         animStartTime = animation4_Start;
         animLength = animation4_Length;
       }
+      else if(animationIndex == 4)
+      {
+        modelViewer.setAttribute("camera-target", defaultCameraTarget);
+        animStartTime = animation5_Start;
+        animLength = animation5_Length;
+      }
 
       //console.log(animationIndex + " " + animStartTime + " " + animLength);
 
@@ -199,7 +209,8 @@
       AR_Button.classList.remove('fade-in');
       AR_Button.classList.add('fade-out');
 
-      if(animationIndex == 3)
+      // hide anim texts
+      if(animationIndex == 3 || animationIndex == 4)
       {
         animationText.classList.remove('fade-in');
         animationText.classList.add('fade-out');
@@ -256,6 +267,17 @@
         clearTimeout(animtionTextTimeoutID);
 
         modelViewer.setAttribute("camera-target", defaultCameraTarget);
+    };
+
+    window.updateTexture = async (texture) =>
+    {
+      const modelViewer = document.querySelector('model-viewer');
+      const tex = await modelViewer.createTexture("assets/"+texture);
+      //const material = modelViewer.model.materials.getMaterialByName('Etykieta');
+      const material = modelViewer.model.materials.filter(m => m.name === 'Etykieta')[0];
+
+      material.pbrMetallicRoughness['baseColorTexture'].setTexture(tex);
+      //material['baseColorTexture'].setTexture(tex);
     };
 
     const updateAnimationText = (text) =>
@@ -389,6 +411,7 @@
           align-items: center;
           padding: 20px;
           box-sizing: border-box;
+          pointer-events: none;
         }
         .header-box
         {
@@ -408,6 +431,7 @@
           text-decoration: none;
           font-weight: bold;
           font-size: calc(1vmin + 8px);
+          pointer-events: auto;
         }
         .button:hover
         {
@@ -427,6 +451,7 @@
           border: 2px solid #001956;
           border-radius: 30px;
           font-weight: bold;
+          pointer-events: auto;
         }
         .home-button:hover
         {
@@ -440,12 +465,13 @@
             border-radius: 0px;
             color: white;
             font-size: calc(1vmin + 8px);
+            pointer-events: auto;
         }
-        .dose-1 { background-color: #4CAF50; }
-        .dose-2 { background-color: #C760A2; }
-        .dose-3 { background-color: #A0522D; }
-        .dose-4 { background-color: #4169E1; }
-        .dose-5 { background-color: #696969; }
+        .dose-1 { background-color: #67a699; }
+        .dose-2 { background-color: #954161; }
+        .dose-3 { background-color: #864716; }
+        .dose-4 { background-color: #015685; }
+        .dose-5 { background-color: #2d3033; }
 
   /* This keeps child nodes hidden while the element loads */
   :not(:defined) > * {
